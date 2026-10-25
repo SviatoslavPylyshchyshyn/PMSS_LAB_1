@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinCompose)
+    alias(libs.plugins.googleServices)
 }
 
 android {
@@ -51,6 +52,10 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.lifecycle.runtime.compose)
     debugImplementation(libs.compose.ui.tooling)
+
+    // Firebase SDK
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

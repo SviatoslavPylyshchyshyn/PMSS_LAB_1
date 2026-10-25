@@ -24,19 +24,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.intrusiondetector.ble.BleScreen
 import com.example.intrusiondetector.ble.BleViewModel
+import com.example.intrusiondetector.cloud.CloudScreen
+import com.example.intrusiondetector.cloud.CloudViewModel
 import com.example.intrusiondetector.monitor.MonitorAction
 import com.example.intrusiondetector.monitor.MonitorScreen
 import com.example.intrusiondetector.monitor.MonitorViewModel
 import com.example.intrusiondetector.ui.theme.IntrusionDetectorTheme
 
 /**
- * Головна Activity додатку IntrusionDetector (ЛР 1 & ЛР 2).
+ * Головна Activity додатку IntrusionDetector (ЛР 1, ЛР 2, ЛР 3).
  * Керує навігацією за допомогою вкладок та транслює події життєвого циклу у ViewModel.
  */
 class MainActivity : ComponentActivity() {
 
     private val monitorVm: MonitorViewModel by viewModels()
     private val bleVm: BleViewModel by viewModels()
+    private val cloudVm: CloudViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     var selectedTabIndex by remember { mutableIntStateOf(0) }
-                    val tabs = listOf("Сенсор", "Смарт-Хаб")
+                    val tabs = listOf("Сенсор", "Смарт-Хаб", "Хмара")
 
                     Scaffold(
                         topBar = {
@@ -85,6 +88,7 @@ class MainActivity : ComponentActivity() {
                             when (selectedTabIndex) {
                                 0 -> MonitorScreen(vm = monitorVm)
                                 1 -> BleScreen(vm = bleVm)
+                                2 -> CloudScreen(vm = cloudVm)
                             }
                         }
                     }

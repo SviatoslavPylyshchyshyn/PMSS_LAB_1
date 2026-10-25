@@ -34,7 +34,7 @@ class BleViewModel(app: Application) : AndroidViewModel(app) {
     private var connectJob: Job? = null
 
     init {
-        // Відстежуємо логи та стан підключення від IBleConnector
+        // відстеження логів та стан підключення від IBleConnector
         viewModelScope.launch {
             bleConnector.logs.collect { newLogs ->
                 _state.update { it.copy(logs = newLogs) }
