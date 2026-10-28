@@ -24,8 +24,8 @@ data class MonitorState(
     val sensorName: String = "Визначення..."
 ) {
     companion object {
-        const val WARNING_THRESHOLD_M_S2 = 0.8f
-        const val ALARM_THRESHOLD_M_S2 = 3.0f
+        const val WARNING_THRESHOLD_M_S2 = 1.0f
+        const val ALARM_THRESHOLD_M_S2 = 2.5f
         const val GRAVITY_EARTH = 9.81f
     }
 

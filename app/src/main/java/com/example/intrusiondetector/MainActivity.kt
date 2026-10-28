@@ -22,6 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.example.intrusiondetector.actuator.ActuatorScreen
+import com.example.intrusiondetector.actuator.ActuatorViewModel
 import com.example.intrusiondetector.ble.BleScreen
 import com.example.intrusiondetector.ble.BleViewModel
 import com.example.intrusiondetector.cloud.CloudScreen
@@ -32,7 +34,7 @@ import com.example.intrusiondetector.monitor.MonitorViewModel
 import com.example.intrusiondetector.ui.theme.IntrusionDetectorTheme
 
 /**
- * Головна Activity додатку IntrusionDetector (ЛР 1, ЛР 2, ЛР 3).
+L * Головна Activity додатку IntrusionDetector (ЛР 1, ЛР 2, ЛР 3, ЛР 4).
  * Керує навігацією за допомогою вкладок та транслює події життєвого циклу у ViewModel.
  */
 class MainActivity : ComponentActivity() {
@@ -40,6 +42,7 @@ class MainActivity : ComponentActivity() {
     private val monitorVm: MonitorViewModel by viewModels()
     private val bleVm: BleViewModel by viewModels()
     private val cloudVm: CloudViewModel by viewModels()
+    private val actuatorVm: ActuatorViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     var selectedTabIndex by remember { mutableIntStateOf(0) }
-                    val tabs = listOf("Сенсор", "Смарт-Хаб", "Хмара")
+                    val tabs = listOf("Сенсор", "Ble", "Хмара", "Актуатор")
 
                     Scaffold(
                         topBar = {
@@ -89,6 +92,7 @@ class MainActivity : ComponentActivity() {
                                 0 -> MonitorScreen(vm = monitorVm)
                                 1 -> BleScreen(vm = bleVm)
                                 2 -> CloudScreen(vm = cloudVm)
+                                3 -> ActuatorScreen(vm = actuatorVm)
                             }
                         }
                     }

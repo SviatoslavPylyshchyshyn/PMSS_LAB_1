@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intrusiondetector.helpers.SensorReader
+import com.example.intrusiondetector.helpers.SmartActuator
+import com.example.intrusiondetector.monitor.MonitorState
 import com.example.intrusiondetector.repository.SensorPayload
 import com.example.intrusiondetector.repository.SensorRepository
 import com.example.intrusiondetector.repository.SyncStatus
@@ -26,6 +28,7 @@ class CloudViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repository = SensorRepository(app)
     private val sensorReader = SensorReader(app)
+    private val smartActuator = SmartActuator.getInstance(app)
 
     private val _state = MutableStateFlow(CloudState())
     val state: StateFlow<CloudState> = _state.asStateFlow()
@@ -119,12 +122,13 @@ class CloudViewModel(app: Application) : AndroidViewModel(app) {
             val isSimulatedOffline = _state.value.isSimulatedOffline
             val hasRealNetwork = repository.isNetworkAvailable()
 
-            val magnitude = Math.sqrt((latestX * latestX + latestY * latestY + latestZ * latestZ).toDouble()).toFloat()
-            val delta = Math.abs(magnitude - 9.81f)
+            val monitorState = MonitorState(x = latestX, y = latestY, z = latestZ)
+
+            // Передаємо ТРИВОГУ поки активована сирена або спалах у системі
             val computedIntrusionState = when {
-                delta >= 3.0f -> "ALARM"
-                delta >= 0.8f -> "WARNING"
-                else -> "SAFE"
+                smartActuator.isSirenPlaying || smartActuator.isFlashlightOn -> "ALARM"
+                smartActuator.isVibrating -> "WARNING"
+                else -> monitorState.intrusionState.name
             }
 
             val currentPayload = SensorPayload(
@@ -133,7 +137,7 @@ class CloudViewModel(app: Application) : AndroidViewModel(app) {
                 x = latestX,
                 y = latestY,
                 z = latestZ,
-                magnitude = magnitude,
+                magnitude = monitorState.magnitude,
                 intrusionState = computedIntrusionState,
                 timestamp = System.currentTimeMillis()
             )

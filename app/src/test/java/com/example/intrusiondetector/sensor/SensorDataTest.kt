@@ -35,13 +35,13 @@ class SensorDataTest {
 
     @Test
     fun intrusionState_evaluatesWarningOnVibration() {
-        val vibrationState = MonitorState(x = 3.0f, y = 3.0f, z = 9.81f)
+        val vibrationState = MonitorState(x = 0f, y = 0f, z = 11.0f)
         assertEquals(IntrusionState.WARNING, vibrationState.intrusionState)
     }
 
     @Test
     fun intrusionState_evaluatesAlarmOnImpact() {
-        val impactState = MonitorState(x = 6.0f, y = 6.0f, z = 9.81f)
+        val impactState = MonitorState(x = 0f, y = 0f, z = 13.0f)
         assertEquals(IntrusionState.ALARM, impactState.intrusionState)
     }
 }
